@@ -7,7 +7,9 @@ const envSchema = z.object({
     SEND_GAME_ALERT_MESSAGE_DAY_OF_THE_WEEK: z.string().min(0).max(6).optional(),
     SEND_GAME_ALERT_MESSAGE_TIME_HOURS: z.string({ description: "Hours is required" }).min(0).max(23),
     SEND_GAME_ALERT_MESSAGE_TIME_MINUTES: z.string({ description: "Minutes is required" }).min(0).max(59),
-
+    EPIC_OFFERS_ENDPOINT: z.string({ description: "Epic Games Store offers endpoint is required" }).min(1),
+    EPIC_GAME_BASE_URL: z.string({ description: "Epic Games Store base URL is required" }).min(1),
+    DISCORD_CHANNEL_ID: z.string({ description: "Discord Channel ID is required" }).min(1),
     // Env vars...
 });
 

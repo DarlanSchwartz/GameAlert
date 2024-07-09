@@ -5,8 +5,8 @@ import { log, onError } from "#settings";
 import ck from "chalk";
 import glob from "fast-glob";
 import path from "node:path";
-import cron from "node-cron";
 import fetchAndSendFreeGames from "alerts/epic.alert.js";
+import Scheduler from "services/schedules.service.js";
 
 type R<O extends BootstrapAppOptions> = O["multiple"] extends true ? Client[] : Client;
 
@@ -96,17 +96,8 @@ async function scheduleGamesAlertTask(client: Client) {
     //const dayOfTheWeek = process.env.SEND_GAME_ALERT_MESSAGE_DAY_OF_THE_WEEK ;
     const minutes = process.env.SEND_GAME_ALERT_MESSAGE_TIME_MINUTES;
     const hours = process.env.SEND_GAME_ALERT_MESSAGE_TIME_HOURS;
-    cron.schedule(`${minutes} ${hours} * * *`, async () => {
-        try {
-            await fetchAndSendFreeGames(client);
-            console.log("✔️ Successfully executed fetchAndSendFreeGames ✔️");
-
-        } catch (error) {
-            console.error("❌ Error executing fetchAndSendFreeGames:", error + "❌");
-        }
-    });
-
-    console.log(`✔️ Scheduled task to fetch and send free games to:${hours}:${minutes} ✔️`);
+    await Scheduler.schedule(fetchAndSendFreeGames, client, parseInt(minutes), parseInt(hours));
+    console.log(`- ✔️ Scheduled task to fetch and send free games to:${hours}:${minutes} ✔️`);
 }
 
 function createClient(token: string, options: BootstrapAppOptions): Client {
