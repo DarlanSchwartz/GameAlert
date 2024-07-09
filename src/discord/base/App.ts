@@ -6,7 +6,7 @@ import ck from "chalk";
 import glob from "fast-glob";
 import path from "node:path";
 import cron from "node-cron";
-import EpicClient from "epic/Client.js"
+import fetchAndSendFreeGames from "alerts/epic.alert.js";
 
 type R<O extends BootstrapAppOptions> = O["multiple"] extends true ? Client[] : Client;
 
@@ -66,39 +66,7 @@ export async function bootstrapApp<O extends BootstrapAppOptions>(options: O): P
     return client as R<O>;
 }
 
-async function fetchAndSendFreeGames(client: Client) {
-    // TODO: don't hard code this
-    const channelId = "1257508891978240090"; // Replace with your channel ID
-    // TODO: don't hard code this
-    const baseURL = "https://store.epicgames.com/pt-BR/p/";
-    // TODO: don't hard code this
-    const endpoint = "https://store-site-backend-static-ipv4.ak.epicgames.com/freeGamesPromotions?locale=pt-BR&country=BR&allowCountries=BR";
 
-    const response = await EpicClient.fetchOffers(endpoint);
-    const elements = response.data.Catalog.searchStore.elements;
-    const offers = EpicClient.getTodaysOffers(elements);
-
-    if (offers.length === 0) return;
-
-    let content = "";
-
-    for (const offer of offers) {
-        const slug = EpicClient.getSlug(offer);
-
-        if (slug)
-            content += ` ${baseURL}${offer.productSlug}\n`;
-    }
-
-    // Ensure the content length does not exceed Discord's limit
-    if (content.length > 2000) {
-        content = content.substring(0, 1997) + "...";
-    }
-
-    const channel = await client.channels.fetch(channelId);
-    if (!channel) return;
-    if (!channel.isTextBased()) return;
-    channel.send(content);
-}
 
 async function loadDirectories(foldername: string, directories: string[] = [], loadLogs?: boolean) {
     const pattern: string = "**/*.{ts,js,tsx,jsx}";
@@ -123,6 +91,24 @@ async function loadDirectories(foldername: string, directories: string[] = [], l
     console.log();
     log.success(spaceBuilder("📦", versions));
 }
+
+async function scheduleGamesAlertTask(client: Client) {
+    //const dayOfTheWeek = process.env.SEND_GAME_ALERT_MESSAGE_DAY_OF_THE_WEEK ;
+    const minutes = process.env.SEND_GAME_ALERT_MESSAGE_TIME_MINUTES;
+    const hours = process.env.SEND_GAME_ALERT_MESSAGE_TIME_HOURS;
+    cron.schedule(`${minutes} ${hours} * * *`, async () => {
+        try {
+            await fetchAndSendFreeGames(client);
+            console.log("✔️ Successfully executed fetchAndSendFreeGames ✔️");
+
+        } catch (error) {
+            console.error("❌ Error executing fetchAndSendFreeGames:", error + "❌");
+        }
+    });
+
+    console.log(`✔️ Scheduled task to fetch and send free games to:${hours}:${minutes} ✔️`);
+}
+
 function createClient(token: string, options: BootstrapAppOptions): Client {
     const client = new Client(Object.assign(options, {
         intents: options.intents ?? CustomItents.All,
@@ -151,17 +137,7 @@ function createClient(token: string, options: BootstrapAppOptions): Client {
         process.on("uncaughtException", err => onError(err, client));
         process.on("unhandledRejection", err => onError(err, client));
         if (options.whenReady) options.whenReady(client);
-        cron.schedule("47 0 * * *", async () => {
-            try {
-                await fetchAndSendFreeGames(client);
-                console.log("Successfully executed fetchAndSendFreeGames");
-            } catch (error) {
-                console.error("Error executing fetchAndSendFreeGames:", error);
-            }
-        });
-        console.log("Scheduled task triggered at 00:41");
-
-
+        await scheduleGamesAlertTask(client);
     });
     client.on("interactionCreate", async (interaction) => {
         if (interaction.isCommand()) Command.onCommand(interaction);

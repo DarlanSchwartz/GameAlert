@@ -5,12 +5,13 @@
 		"skipLibCheck": true,
 		"resolveJsonModule": true,
 		"strict": true,
-		
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noImplicitReturns": true,
-
-		"lib": ["ESNext"],
+		"allowJs": true,
+		"lib": [
+			"ESNext"
+		],
 		"target": "ESNext",
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
@@ -18,15 +19,33 @@
 		"rootDir": "./src",
 		"baseUrl": "./src",
 		"paths": {
-			"#database": ["./database/index.ts"],
-			"#base": ["./discord/base/index.ts"],
-			"#functions": ["./functions/index.ts"],
-			"#menus": ["./menus/index.ts"],
-			"#settings": ["./settings/index.ts"],
-			"#tools": ["./tools/index.ts"],
-			"#lang/*": ["../lang/*"]
+			"#database": [
+				"./database/index.ts"
+			],
+			"#base": [
+				"./discord/base/index.ts"
+			],
+			"#functions": [
+				"./functions/index.ts"
+			],
+			"#menus": [
+				"./menus/index.ts"
+			],
+			"#settings": [
+				"./settings/index.ts"
+			],
+			"#tools": [
+				"./tools/index.ts"
+			],
+			"#lang/*": [
+				"../lang/*"
+			]
 		},
 	},
-	"include": ["src"],
-	"exclude": ["node_modules"]
+	"include": [
+		"src"
+	],
+	"exclude": [
+		"node_modules"
+	]
 }
