@@ -6,7 +6,7 @@ import ck from "chalk";
 import glob from "fast-glob";
 import path from "node:path";
 import cron from "node-cron";
-import axios from "axios";
+import EpicClient from "epic/Client.js"
 
 type R<O extends BootstrapAppOptions> = O["multiple"] extends true ? Client[] : Client;
 
@@ -67,19 +67,27 @@ export async function bootstrapApp<O extends BootstrapAppOptions>(options: O): P
 }
 
 async function fetchAndSendFreeGames(client: Client) {
+    // TODO: don't hard code this
     const channelId = "1257508891978240090"; // Replace with your channel ID
+    // TODO: don't hard code this
     const baseURL = "https://store.epicgames.com/pt-BR/p/";
-    const games = await axios.get("https://store-site-backend-static-ipv4.ak.epicgames.com/freeGamesPromotions?locale=pt-BR&country=BR&allowCountries=BR");
-    const data = games.data.data.Catalog.searchStore.elements;
-    if (data.length === 0) return;
+    // TODO: don't hard code this
+    const endpoint = "https://store-site-backend-static-ipv4.ak.epicgames.com/freeGamesPromotions?locale=pt-BR&country=BR&allowCountries=BR";
 
-    const currentGame = data[data.length - 1];
-    const soon = data[0];
-    const currentGameSlug = currentGame.productSlug || currentGame.catalogNs.mappings[0].pageSlug;
-    const soonGameSlug = soon.productSlug || soon.catalogNs.mappings[0].pageSlug;
+    const response = await EpicClient.fetchOffers(endpoint);
+    const elements = response.data.Catalog.searchStore.elements;
+    const offers = EpicClient.getTodaysOffers(elements);
 
-    let content = ` ${baseURL}${currentGameSlug}\n`;
-    if (soon) content += `${baseURL}${soonGameSlug}`;
+    if (offers.length === 0) return;
+
+    let content = "";
+
+    for (const offer of offers) {
+        const slug = EpicClient.getSlug(offer);
+
+        if (slug)
+            content += ` ${baseURL}${offer.productSlug}\n`;
+    }
 
     // Ensure the content length does not exceed Discord's limit
     if (content.length > 2000) {
