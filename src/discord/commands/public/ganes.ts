@@ -1,5 +1,5 @@
 import { Command } from "#base";
-import fetchAndSendFreeGames from "alerts/epic.alert.js";
+import fetchAndSendFreeGames from "functions/alerts/epic.alert.js";
 import { ApplicationCommandType } from "discord.js";
 new Command({
     name: "games",

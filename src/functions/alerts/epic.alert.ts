@@ -1,7 +1,7 @@
-import { Client } from "discord.js";
+import { Client as DiscordClient } from "discord.js";
 import EpicClient from "epic/client.js";
 
-export default async function fetchAndSendFreeGames(client: Client) {
+export default async function fetchAndSendFreeGames(client: DiscordClient) {
     try {
         const channelId = process.env.DISCORD_CHANNEL_ID;
         const baseURL = process.env.EPIC_GAME_BASE_URL;
