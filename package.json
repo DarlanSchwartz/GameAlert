@@ -30,28 +30,5 @@
     "eslint": "^8.57.0",
     "tsx": "^4.11.0",
     "typescript": "^5.4.5"
-  },
-  "imports": {
-    "#database": [
-      "./build/database/index.js"
-    ],
-    "#base": [
-      "./build/discord/base/index.js"
-    ],
-    "#functions": [
-      "./build/functions/index.js"
-    ],
-    "#menus": [
-      "./build/menus/index.js"
-    ],
-    "#settings": [
-      "./build/settings/index.js"
-    ],
-    "#tools": [
-      "./build/tools/index.js"
-    ],
-    "#lang/*": [
-      "./lang/*"
-    ]
   }
 }

@@ -1,4 +1,4 @@
-import { Responder, ResponderType } from "#base";
+import { Responder, ResponderType } from "../../base/index.js";
 import { time } from "discord.js";
 
 new Responder({

@@ -1,12 +1,14 @@
-import { Command, Event, Responder } from "#base";
+import { Command, Event, Responder } from "./index.js";
 import { CustomItents, CustomPartials, spaceBuilder, toNull } from "@magicyan/discord";
 import { Client, ClientOptions, version as djsVersion } from "discord.js";
-import { log, onError } from "#settings";
 import ck from "chalk";
 import glob from "fast-glob";
 import path from "node:path";
-import fetchAndSendFreeGames from "#functions";
-import Scheduler from "services/schedules.service.js";
+import fetchAndSendFreeGames from "../../alerts/epic.alert.js";
+import Scheduler from "../../services/scheduler.service.js";
+import { onError } from "../../settings/error.js";
+import { log } from "../../settings/index.js";
+
 
 type R<O extends BootstrapAppOptions> = O["multiple"] extends true ? Client[] : Client;
 
@@ -74,7 +76,7 @@ async function loadDirectories(foldername: string, directories: string[] = [], l
         `!./${foldername}/discord/base/*`,
         `./${foldername}/discord/${pattern}`,
         directories.map(dir => path.join(foldername, dir))
-            .map(p => p.replaceAll("\\", "/"))
+            .map(p => p.replace("\\", "/"))
             .map(p => `./${p}/${pattern}`)
     ].flat();
     const paths: string[] = await glob(patterns, { absolute: true });

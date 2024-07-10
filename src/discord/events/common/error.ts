@@ -1,5 +1,5 @@
-import { Event } from "#base";
-import { log } from "#settings";
+import { Event } from "../../base/index.js";
+import { log } from "../../../settings/index.js";
 
 new Event({
     name: "Error handler",

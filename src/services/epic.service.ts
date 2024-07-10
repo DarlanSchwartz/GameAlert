@@ -1,5 +1,5 @@
 import axios from "axios";
-import { EpicResponse, EpicCatalogElement, PromotionalOffer2 } from "./types.js";
+import { EpicResponse, EpicCatalogElement, PromotionalOffer2 } from "./epic.types.js";
 
 export default class EpicClient {
     private static instance: EpicClient;

@@ -1,6 +1,7 @@
-import { Command } from "#base";
+
 import { createRow } from "@magicyan/discord";
 import { ApplicationCommandType, ButtonBuilder, ButtonStyle } from "discord.js";
+import { Command } from "../../base/Command.js";
 
 new Command({
 	name: "ping",

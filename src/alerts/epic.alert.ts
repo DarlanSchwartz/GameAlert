@@ -1,5 +1,5 @@
 import { Client as DiscordClient } from "discord.js";
-import EpicClient from "epic/client.js";
+import EpicClient from "../services/epic.service.js";
 
 export default async function fetchAndSendFreeGames(client: DiscordClient) {
     try {
