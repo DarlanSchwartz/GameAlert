@@ -5,7 +5,7 @@ import { log, onError } from "#settings";
 import ck from "chalk";
 import glob from "fast-glob";
 import path from "node:path";
-import fetchAndSendFreeGames from "functions/alerts/epic.alert.js"
+import fetchAndSendFreeGames from "#functions";
 import Scheduler from "services/schedules.service.js";
 
 type R<O extends BootstrapAppOptions> = O["multiple"] extends true ? Client[] : Client;
