@@ -1,5 +1,5 @@
 import { Command } from "../../base/Command.js";
-import fetchAndSendFreeGames from "../../../alerts/epic.alert.js";
+import { fetchOffersFormatted } from "../../../alerts/epic.alert.js";
 import { ApplicationCommandType } from "discord.js";
 new Command({
     name: "games",
@@ -8,7 +8,13 @@ new Command({
     global: true,
     async run(interaction) {
         try {
-            await fetchAndSendFreeGames(interaction.client);
+            const offers = await fetchOffersFormatted();
+            let reply = "No free games 😢";
+
+            if (offers)
+                reply = offers;
+
+            await interaction.reply(reply);
         } catch (error) {
             console.error(error);
         }
