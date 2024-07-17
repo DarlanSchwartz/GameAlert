@@ -5,10 +5,10 @@
   "scripts": {
     "build:dev": "tsc --noEmit && echo ✔ Ok",
     "build": "tsc",
-    "dev": "tsx --watch --env-file .env ./src/index.ts",
-    "dev:dev": "tsx --env-file .env.development ./src/index.ts",
-    "watch": "tsx --watch --env-file .env ./src/index.ts",
-    "watch:dev": "tsx --watch --env-file .env.development ./src/index.ts",
+    "dev": "node --watch --env-file .env ./build/index.ts",
+    "dev:dev": "node --env-file .env.development ./build/index.js",
+    "watch": "node --watch --env-file .env ./build/index.ts",
+    "watch:dev": "node --watch --env-file .env.development ./build/index.ts",
     "start": "node --env-file .env ./build/index.js",
     "start:dev": "node --env-file .env.development ./build/index.js"
   },
@@ -28,7 +28,6 @@
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.57.0",
-    "tsx": "^4.11.0",
     "typescript": "^5.4.5"
   }
 }

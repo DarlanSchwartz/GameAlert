@@ -6,24 +6,29 @@
             "name": "Run dev",
             "request": "launch",
             "command": "npm run dev",
+            "outFiles": ["${workspaceFolder}/build/**/*.js"]
         },
         {
             "type": "node-terminal",
             "name": "Run dev:dev",
             "request": "launch",
-            "command": "npm run dev:dev"
+            "command": "npm run dev:dev",
+            "outFiles": ["${workspaceFolder}/build/**/*.js"]
         },
         {
             "type": "node-terminal",
             "name": "Run watch",
             "request": "launch",
-            "command": "npm run watch"
+            "command": "npm run watch",
+            "outFiles": ["${workspaceFolder}/build/**/*.js"]
         },
         {
             "type": "node-terminal",
             "name": "Run watch:dev",
             "request": "launch",            
-            "command": "npm run watch:dev"
+            "command": "npm run watch:dev",
+            "outFiles": ["${workspaceFolder}/build/**/*.js"]
+
 
         },
         {
