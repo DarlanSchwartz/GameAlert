@@ -33,7 +33,7 @@ export async function fetchOffersFormatted(): Promise<string | null> {
 
         const response = await EpicClient.fetchOffers(endpoint);
         const elements = response.data.Catalog.searchStore.elements;
-        const offers = EpicClient.getTodaysOffers(elements);
+        const offers = EpicClient.getFreeGames(elements);
         
         if (offers.length === 0) null;
         
